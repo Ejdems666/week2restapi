@@ -18,7 +18,16 @@ public class MyRequestDispatcher extends RequestDispatcher {
                 new Route("(?<controller>[a-z\\-]+)(?<method>/[a-z\\-]+)?(?<int>/\\d+)?", "Default", "index")
         );
         EndpointReflection endpointReflection = router.getControllerReflection("controller", url);
+        addCorsHeader(response);
         AppRunnable appRunnable = new AppRunnable(request, response);
         appRunnable.run(endpointReflection);
     }
+
+    private void addCorsHeader(HttpServletResponse response){
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+        response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
+        response.addHeader("Access-Control-Max-Age", "1728000");
+    }
+
 }
